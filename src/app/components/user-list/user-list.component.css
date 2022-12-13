@@ -3,4 +3,9 @@
     border-style: solid;
     width: 500px;
     padding: 5px;
+    cursor: pointer;
+}
+
+.user:hover {
+    background-color: bisque;
 }

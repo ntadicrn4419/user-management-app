@@ -1,14 +1,25 @@
-<div>
+<div *ngIf="authorised;else noPermission">
+  <div>
     <div *ngFor="let u of users">
-        <div class="user">
-            <p>{{ u.firstname }} {{ u.lastname }}, {{ u.email }} <span><a routerLink="/user/id">Edit</a></span></p>
-        </div>
-        <br>
+      <div class="user" (click)="routeTo(u.email)">
+        <p>{{ u.firstname }} {{ u.lastname }}, {{ u.email }}</p>
+        <ul>
+          <li *ngFor="let p of u.permissionList">
+            {{ p }}
+          </li>
+        </ul>
+      </div>
+      <br />
     </div>
+  </div>
+  
+  <div>
+    <button class="btn btn-primary" (click)="goToAddNewUserPage()">
+      Add new user
+    </button>
+  </div>
 </div>
 
-<div>
-    <button class="btn btn-primary" (click)="goToAddNewUserPage()">
-        Add new user        
-    </button>
-</div>
+<ng-template #noPermission>
+  <h3> You have no permission.</h3>
+</ng-template>

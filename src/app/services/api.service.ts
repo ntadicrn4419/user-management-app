@@ -2,29 +2,29 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Permission, User } from '../models';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ApiService implements OnDestroy{
-  
+export class ApiService implements OnDestroy {
   private readonly apiUrl = environment.apiUrl;
   private _users = new BehaviorSubject<User[]>([]);
   users$ = this._users.asObservable();
 
   constructor(private httpClient: HttpClient, private router: Router) {}
-  
+
   login(email: string, password: string) {
     return this.httpClient
       .post<any>(`${this.apiUrl}/auth/login`, { email, password })
       .subscribe((res: any) => {
         localStorage.setItem('jwt_token', res.jwt);
+        localStorage.setItem('permissions', res.permissionList);
         this.router.navigate(['/users']);
       });
-    }
-    
+  }
+
   getAllUsers() {
     return this.httpClient
       .get<any>(`${this.apiUrl}/api/users`)
@@ -39,7 +39,7 @@ export class ApiService implements OnDestroy{
     email: string,
     password: string,
     permissionList?: Permission[]
-    ) {
+  ) {
     return this.httpClient
       .post<any>(`${this.apiUrl}/api/users/add`, {
         firstname,
@@ -53,12 +53,32 @@ export class ApiService implements OnDestroy{
         this.router.navigate(['/users']);
       });
   }
-  
-  findUserByEmail(userEmail: string) {}
 
-  updateUser() {}
+  findUserByEmail(email: string): Observable<User> {
+    return this.httpClient.get<User>(`${this.apiUrl}/api/users/${email}`);
+  }
 
-  deleteUser() {}
+  updateUser(
+    firstname: string,
+    lastname: string,
+    email: string,
+    password: string,
+    permissionList?: Permission[]
+  ) {
+    return this.httpClient.put<any>(`${this.apiUrl}/api/users/update`, {
+      firstname,
+      lastname,
+      email,
+      password,
+      permissionList,
+    });
+  }
+
+  deleteUser(email: string) {
+    return this.httpClient.post<any>(`${this.apiUrl}/api/users/delete`, {
+      email,
+    });
+  }
 
   ngOnDestroy(): void {
     this._users.unsubscribe();
