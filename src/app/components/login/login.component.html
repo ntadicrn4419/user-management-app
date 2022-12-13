@@ -1,0 +1,5 @@
+<form class="row g-3" [formGroup]="loginFormGroup" (ngSubmit)="login()">
+    <input class="form-control input" type="email" placeholder="Enter email" formControlName="email">
+    <input class="form-control input" type="password" placeholder="Enter password" formControlName="password">
+    <button  class="btn btn-primary col-auto" type="submit">Login</button>
+</form>
