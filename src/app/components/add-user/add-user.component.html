@@ -27,47 +27,47 @@
       />
     </div>
     <br />
-    <div formGroupName="permissionForm">
+    <div class="form-group">
       <h4>Permissions:</h4>
       <div class="form-check">
         <input
           class="form-check-input"
-          type="checkbox"
-          value=""
+          type="radio"
+          [value]="CAN_READ"
           id="canRead"
-          formControlName="canRead"
+          formControlName="permissions"
         />
-        <label class="form-check-label" for="canRead"> CAN_READ </label>
+        <label class="form-check-label" for="canRead"> {{ CAN_READ }} </label>
       </div>
       <div class="form-check">
         <input
           class="form-check-input"
-          type="checkbox"
-          value=""
+          type="radio"
+          [value]="CAN_CREATE"
           id="canCreate"
-          formControlName="canCreate"
+          formControlName="permissions"
         />
-        <label class="form-check-label" for="canCreate"> CAN_CREATE </label>
+        <label class="form-check-label" for="canCreate"> {{ CAN_CREATE }} </label>
       </div>
       <div class="form-check">
         <input
           class="form-check-input"
-          type="checkbox"
-          value=""
+          type="radio"
+          [value]="CAN_UPDATE"
           id="canUpdate"
-          formControlName="canUpdate"
+          formControlName="permissions"
         />
-        <label class="form-check-label" for="canUpdate"> CAN_UPDATE </label>
+        <label class="form-check-label" for="canUpdate"> {{ CAN_UPDATE }} </label>
       </div>
       <div class="form-check">
         <input
           class="form-check-input"
-          type="checkbox"
-          value=""
+          type="radio"
+          [value]="CAN_DELETE"
           id="canDelete"
-          formControlName="canDelete"
+          formControlName="permissions"
         />
-        <label class="form-check-label" for="canDelete"> CAN_DELETE </label>
+        <label class="form-check-label" for="canDelete"> {{ CAN_DELETE }} </label>
       </div>
     </div>
     <br />

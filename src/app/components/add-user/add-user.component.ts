@@ -1,6 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { startWith } from 'rxjs';
 import { Permission } from 'src/app/models';
 import { ApiService } from 'src/app/services/api.service';
 import { MyAuthService } from 'src/app/services/my-auth.service';
@@ -11,56 +12,89 @@ import { MyAuthService } from 'src/app/services/my-auth.service';
   styleUrls: ['./add-user.component.css'],
 })
 export class AddUserComponent implements OnInit {
+
+  CAN_READ: string = 'CAN READ';
+  CAN_CREATE: string = 'CAN READ & CREATE';
+  CAN_UPDATE: string = 'CAN READ, CREATE & UPDATE';
+  CAN_DELETE: string = 'CAN READ, CREATE, UPDATE & DELETE';
+
   addUserForm = new FormGroup({
     firstname: new FormControl(''),
     lastname: new FormControl(''),
     email: new FormControl(''),
     password: new FormControl(''),
-    permissionForm: new FormGroup({
-      canRead: new FormControl(false),
-      canCreate: new FormControl(false),
-      canUpdate: new FormControl(false),
-      canDelete: new FormControl(false),
-    }),
+    permissions: new FormControl(this.CAN_READ),
   });
+
+  get firstname() {
+    return this.addUserForm.get('firstname')?.value!;
+  }
+  get lastname() {
+    return this.addUserForm.get('lastname')?.value!;
+  }
+  get email() {
+    return this.addUserForm.get('email')?.value!;
+  }
+  get password() {
+    return this.addUserForm.get('password')?.value!;
+  }
+  get permissions() {
+    return this.addUserForm.get('permissions')?.value!;
+  }
+  get permissionsFormControl() {
+    return this.addUserForm.get('permissions');
+  }
 
   authorised: boolean = false;
 
-  constructor(private apiService: ApiService, private myAuthService: MyAuthService) {}
+  constructor(
+    private apiService: ApiService,
+    private myAuthService: MyAuthService
+  ) {}
 
   ngOnInit(): void {
-    this.authorised = this.myAuthService.isAuthorised(Permission.CAN_CREATE_USERS);
+    this.authorised = this.myAuthService.isAuthorised(
+      Permission.CAN_CREATE_USERS
+    );
   }
 
   addUser() {
-    const firstname = this.addUserForm.get('firstname')?.value;
-    const lastname = this.addUserForm.get('lastname')?.value;
-    const email = this.addUserForm.get('email')?.value;
-    const password = this.addUserForm.get('password')?.value;
-
-    const canRead = this.addUserForm.get('permissionForm')?.get('canRead')?.value;
-    const canCreate = this.addUserForm.get('permissionForm')?.get('canCreate')?.value;
-    const canUpdate = this.addUserForm.get('permissionForm')?.get('canUpdate')?.value;
-    const canDelete = this.addUserForm.get('permissionForm')?.get('canDelete')?.value;
-
-    const permissionList = this.createPermissionList(canRead!, canCreate!, canUpdate!, canDelete!);
-
-    this.apiService.createUser(firstname!, lastname!, email!, password!, permissionList);
+    const permissionList = this.createPermissionList(this.permissions);
+    this.apiService.createUser(
+      this.firstname,
+      this.lastname,
+      this.email,
+      this.password,
+      permissionList
+    );
   }
 
-  private createPermissionList(canRead: boolean, canCreate: boolean, canUpdate: boolean, canDelete: boolean): Permission[]{
+  private createPermissionList(permissions: string): Permission[] {
     const resultList = [];
-    if(canRead) {
-      resultList.push(Permission.CAN_READ_USERS);
-    }
-    if(canCreate) {
-      resultList.push(Permission.CAN_CREATE_USERS);
-    }
-    if(canUpdate) {
-      resultList.push(Permission.CAN_UPDATE_USERS);
-    }
-    if(canDelete) {
-      resultList.push(Permission.CAN_DELETE_USERS);
+    switch (permissions) {
+      case this.CAN_READ:
+        resultList.push(Permission.CAN_READ_USERS);
+        break;
+      case this.CAN_CREATE:
+        resultList.push(Permission.CAN_READ_USERS, Permission.CAN_CREATE_USERS);
+        break;
+      case this.CAN_UPDATE:
+        resultList.push(
+          Permission.CAN_READ_USERS,
+          Permission.CAN_CREATE_USERS,
+          Permission.CAN_UPDATE_USERS
+        );
+        break;
+      case this.CAN_DELETE:
+        resultList.push(
+          Permission.CAN_READ_USERS,
+          Permission.CAN_CREATE_USERS,
+          Permission.CAN_UPDATE_USERS,
+          Permission.CAN_DELETE_USERS
+        );
+        break;
+      default:
+        resultList.push(Permission.CAN_READ_USERS);
     }
     return resultList;
   }

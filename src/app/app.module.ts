@@ -11,6 +11,7 @@ import { AddUserComponent } from './components/add-user/add-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './http-interceptors';
+import { PermissionsComponent } from './components/permissions/permissions.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { httpInterceptorProviders } from './http-interceptors';
     LoginComponent,
     UserListComponent,
     SingleUserComponent,
-    AddUserComponent
+    AddUserComponent,
+    PermissionsComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule],
   providers: [httpInterceptorProviders],
