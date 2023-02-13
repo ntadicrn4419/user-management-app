@@ -26,55 +26,13 @@
         formControlName="password"
       />
     </div>
-    <br />
-    <div class="form-group">
-      <h4>Permissions:</h4>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="radio"
-          [value]="CAN_READ"
-          id="canRead"
-          formControlName="permissions"
-        />
-        <label class="form-check-label" for="canRead"> {{ CAN_READ }} </label>
-      </div>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="radio"
-          [value]="CAN_CREATE"
-          id="canCreate"
-          formControlName="permissions"
-        />
-        <label class="form-check-label" for="canCreate"> {{ CAN_CREATE }} </label>
-      </div>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="radio"
-          [value]="CAN_UPDATE"
-          id="canUpdate"
-          formControlName="permissions"
-        />
-        <label class="form-check-label" for="canUpdate"> {{ CAN_UPDATE }} </label>
-      </div>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="radio"
-          [value]="CAN_DELETE"
-          id="canDelete"
-          formControlName="permissions"
-        />
-        <label class="form-check-label" for="canDelete"> {{ CAN_DELETE }} </label>
-      </div>
+    <div>
+      <app-permissions (changeValue)="refreshPermissionList($event)"></app-permissions>
     </div>
-    <br />
     <button class="confirm-btn" (click)="addUser()">Save user</button>
   </form>
 </div>
 
 <ng-template #noPermission>
-  <h3> You have no permission.</h3>
+  <h3> You have no permission to add user.</h3>
 </ng-template>
