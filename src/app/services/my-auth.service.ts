@@ -5,7 +5,7 @@ import { Permission } from '../models';
   providedIn: 'root',
 })
 export class MyAuthService {
-  Permission = Permission;
+  readonly Permission = Permission;
   constructor() {}
 
   isAuthenticated(): boolean {
@@ -16,5 +16,9 @@ export class MyAuthService {
   isAuthorised(requiredPermission: Permission): boolean {
     const permissionList = localStorage.getItem('permissions');
     return permissionList!.includes(Permission[requiredPermission]);
+  }
+
+  clearLocalStorage() {
+    localStorage.clear();
   }
 }

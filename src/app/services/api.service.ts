@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { HttpBackend, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Permission, User } from '../models';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -10,6 +10,10 @@ import { Router } from '@angular/router';
 })
 export class ApiService implements OnDestroy {
   private readonly apiUrl = environment.apiUrl;
+
+  private _signedInUserEmail = new BehaviorSubject<string>('');
+  signedInUserEmail$ = this._signedInUserEmail.asObservable();
+
   private _users = new BehaviorSubject<User[]>([]);
   users$ = this._users.asObservable();
 
@@ -18,9 +22,30 @@ export class ApiService implements OnDestroy {
   login(email: string, password: string) {
     return this.httpClient
       .post<any>(`${this.apiUrl}/auth/login`, { email, password })
+      .pipe(
+        catchError((error) => {
+          if (error.status === 401) {
+            return of({
+              failed: true,
+              message: 'Invalid credentials',
+            });
+          } else {
+            return of({
+              failed: true,
+              message: 'An unexpected error occurred',
+            });
+          }
+        })
+      )
       .subscribe((res: any) => {
+        if (res.failed) {
+          alert(res.message);
+          return;
+        }
         localStorage.setItem('jwt_token', res.jwt);
         localStorage.setItem('permissions', res.permissionList);
+        localStorage.setItem('signedInUserEmail', email!);
+        this._signedInUserEmail.next(email);
         this.router.navigate(['/users']);
       });
   }

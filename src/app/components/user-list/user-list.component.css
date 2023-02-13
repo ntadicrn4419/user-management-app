@@ -9,3 +9,8 @@
 .user:hover {
     background-color: bisque;
 }
+
+.add-new-user-btn {
+    padding-left: 10px;
+    padding-right: 10px;
+}
