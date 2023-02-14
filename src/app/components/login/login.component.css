@@ -4,6 +4,7 @@
 
 .invalid-email-text {
     color: red;
+    font-style: italic;
 }
 
 .invalid {

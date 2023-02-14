@@ -1,5 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { Permission } from 'src/app/models';
 import { ApiService } from 'src/app/services/api.service';
 import { MyAuthService } from 'src/app/services/my-auth.service';
@@ -10,28 +9,11 @@ import { MyAuthService } from 'src/app/services/my-auth.service';
   styleUrls: ['./add-user.component.css'],
 })
 export class AddUserComponent implements OnInit {
-
-  addUserForm = new FormGroup({
-    firstname: new FormControl(''),
-    lastname: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-  });
-
-  permissionList: Permission[] = [Permission.CAN_READ_USERS]; // by default, new user can READ other users
-
-  get firstname() {
-    return this.addUserForm.get('firstname')?.value!;
-  }
-  get lastname() {
-    return this.addUserForm.get('lastname')?.value!;
-  }
-  get email() {
-    return this.addUserForm.get('email')?.value!;
-  }
-  get password() {
-    return this.addUserForm.get('password')?.value!;
-  }
+  firstname: string = '';
+  lastname: string = '';
+  email: string = '';
+  password: string = '';
+  permissionList: Permission[] = [];
 
   authorised: boolean = false;
 
@@ -46,19 +28,37 @@ export class AddUserComponent implements OnInit {
     );
   }
 
-  refreshPermissionList(permissions: Permission[]) {
-    this.permissionList = permissions;
+  addUser(formData: any) {
+    this.firstname = formData.firstname;
+    this.lastname = formData.lastname;
+    this.email = formData.email;
+    this.password = formData.password;
+    this.permissionList = formData.permissionList;
+
+    if (this.isValidData()) {
+      this.apiService.createUser(
+        this.firstname,
+        this.lastname,
+        this.email,
+        this.password,
+        this.permissionList
+      );
+    }
   }
 
-  addUser() {
-    this.apiService.createUser(
-      this.firstname,
-      this.lastname,
-      this.email,
-      this.password,
-      this.permissionList,
-    );
+  isValidData() {
+    if (
+      this.firstname !== null &&
+      this.firstname !== '' &&
+      this.lastname !== null &&
+      this.lastname !== '' &&
+      this.email !== null &&
+      this.email !== '' &&
+      this.password !== null &&
+      this.password !== ''
+    ) {
+      return true;
+    }
+    return false;
   }
-
-  
 }

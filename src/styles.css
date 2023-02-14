@@ -10,6 +10,16 @@
   margin-right: 15px;
 }
 
+.user {
+  background-image: url("images/user.png");
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  margin-left: 5px;
+  margin-right: 15px;
+}
+
 .confirm-btn {
   background-color: #18798d;
   color: #ffffff;
@@ -17,4 +27,8 @@
   min-width: 100px;
   border-radius: 5px;
   padding: 5px 5px;
+}
+
+.form-label {
+  font-size: large;
 }

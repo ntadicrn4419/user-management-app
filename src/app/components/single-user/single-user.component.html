@@ -1,68 +1,21 @@
 <div *ngIf="authorisedToUpdate; else noPermission">
-  <h5>User data</h5>
-  <div *ngIf="user">
+  <h3>User data</h3>
+  <div class="user-data" *ngIf="user">
     <p>Firstname: {{ user.firstname }}</p>
     <p>Lastname: {{ user.lastname }}</p>
     <p>Email: {{ user.email }}</p>
-    <p>Permissions:</p>
-    <ul>
-      <li *ngFor="let p of user.permissionList">
-        {{ p }}
-      </li>
-    </ul>
+    <p>Permissions: {{ user.permissionList | permission}}</p>
   </div>
   <br />
   <div *ngIf="authorisedToDelete">
     <button class="btn btn-danger" (click)="deleteUser()">Delete user</button>
   </div>
   <hr />
-
-  <h5>Change user data</h5>
+  <h3>Change user data</h3>
   <div *ngIf="user">
-    <form [formGroup]="editUserForm">
-      <div>
-        <label for="firstname" class="form-label">Firstname</label>
-        <input
-          class="form-control"
-          id="firstname"
-          formControlName="firstname"
-          [placeholder]="user.firstname"
-        />
-      </div>
-      <div>
-        <label for="lastname" class="form-label">Lastname</label>
-        <input
-          class="form-control"
-          id="lastname"
-          formControlName="lastname"
-          [placeholder]="user.lastname"
-        />
-      </div>
-      <div>
-        <label for="email" class="form-label">Email</label>
-        <input
-          class="form-control"
-          type="email"
-          id="email"
-          formControlName="email"
-          [placeholder]="user.email"
-        />
-      </div>
-      <div>
-        <label for="password" class="form-label">Password</label>
-        <input
-          class="form-control"
-          type="password"
-          id="password"
-          formControlName="password"
-        />
-      </div>
-      <br />
-      <div>
-        <app-permissions (changeValue)="refreshPermissionList($event)"></app-permissions>
-      </div>
-      <button class="confirm-btn save-changes-btn" (click)="editUser()">Save changes</button>
-    </form>
+    <app-user-form 
+    [disableEmailChange]="true"
+    (formValue)="editUser($event)"></app-user-form>
   </div>
 </div>
 

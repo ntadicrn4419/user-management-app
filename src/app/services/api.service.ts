@@ -42,6 +42,7 @@ export class ApiService implements OnDestroy {
           alert(res.message);
           return;
         }
+        localStorage.clear();
         localStorage.setItem('jwt_token', res.jwt);
         localStorage.setItem('permissions', res.permissionList);
         localStorage.setItem('signedInUserEmail', email!);
@@ -49,6 +50,33 @@ export class ApiService implements OnDestroy {
         this.router.navigate(['/users']);
       });
   }
+
+  // getAllUsers() {
+  //   return this.httpClient
+  //     .get<any>(`${this.apiUrl}/api/users`)
+  //     .pipe(
+  //       catchError((error) => {
+  //         if (error.status === 403) {
+  //           return of({
+  //             failed: true,
+  //             message: 'Your session has expired. Please sign in again.',
+  //           });
+  //         } else {
+  //           return of({
+  //             failed: true,
+  //             message: 'An unexpected error occured. Please try to sign out and sign in again.',
+  //           });
+  //         }
+  //       })
+  //     )
+  //     .subscribe((response) => {
+  //       if(response.failed) {
+  //         alert(response.message);
+  //         return;
+  //       }
+  //       this._users.next(response.users);
+  //     });
+  // }
 
   getAllUsers() {
     return this.httpClient

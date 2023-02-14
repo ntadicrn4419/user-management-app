@@ -3,14 +3,11 @@
     Add new user
   </button>
   <br><br>
-  <div *ngFor="let u of users">
-    <div class="user" (click)="routeTo(u.email)">
-      <p>{{ u.firstname }} {{ u.lastname }}, {{ u.email }}</p>
-      <ul>
-        <li *ngFor="let p of u.permissionList">
-          {{ p }}
-        </li>
-      </ul>
+  <div *ngFor="let user of users">
+    <div class="user-card" (click)="routeTo(user.email)">
+      <p class="username"><i class="user"></i> {{ user.firstname }} {{ user.lastname }}</p>
+      <p>Email: {{ user.email }}</p>
+      <p>Permissions: {{ user.permissionList | permission}}</p>
     </div>
     <br />
   </div>

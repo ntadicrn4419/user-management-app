@@ -12,6 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from './http-interceptors';
 import { PermissionsComponent } from './components/permissions/permissions.component';
+import { UserFormComponent } from './components/user-form/user-form.component';
+import { PermissionPipe } from './pipes/permission.pipe';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { PermissionsComponent } from './components/permissions/permissions.compo
     UserListComponent,
     SingleUserComponent,
     AddUserComponent,
-    PermissionsComponent
+    PermissionsComponent,
+    UserFormComponent,
+    PermissionPipe
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule],
   providers: [httpInterceptorProviders],
