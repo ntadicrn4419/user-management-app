@@ -43,14 +43,14 @@ export class SingleUserComponent implements OnInit, OnDestroy {
   editUser(formData: any) {
     this.firstname = formData.firstname;
     this.lastname = formData.lastname;
-    this.email = formData.email;
     this.password = formData.password;
     this.permissionList = formData.permissionList;
     
     if (this.isValidData()) {
-      this.apiService.updateUser(this.firstname, this.lastname, this.email, this.password, this.permissionList)
+      this.apiService.updateUser(this.firstname, this.lastname, this.user.email, this.password, this.permissionList)
       .subscribe((updatedUser) => {
         this.user = updatedUser;
+        alert('Successfully changed user data.');
       });
     }
   }

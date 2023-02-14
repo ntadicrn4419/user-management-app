@@ -14,3 +14,7 @@
 .email-disable {
     font-style: italic;
 }
+
+.user-form {
+    max-width: 500px;
+}
